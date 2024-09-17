@@ -34,7 +34,7 @@
 .blocky { 
     background-color: rgb(243, 117, 195);
     grid-column: 16 / 20;
-    grid-row: 41 / 46; 
+    grid-row: 41 / 44; 
     z-index: 5;
 }
 
@@ -156,7 +156,7 @@
 .block6 { 
     background-color: rgb(252, 214, 237);
     grid-column: 1 / 21;
-    grid-row: 40 / 47; 
+    grid-row: 40 / 45; 
     z-index: 1;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -170,7 +170,6 @@
     overflow: hidden; 
 }
 
-/* Медіа-запити для вузьких екранів */
 @media (max-width: 1200px) {
     .blockx, .blocky {
         font-size: calc(1.4rem + 0.8vw);
