@@ -1,1 +1,1 @@
-Web-programming class. 1 Lab
+Web-programming class. 2 Lab
