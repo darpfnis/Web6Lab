@@ -1,0 +1,73 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 80% 20%; /* Блок 1 займає 80%, блок 2 - 20% */
+    grid-template-rows: auto; /* Висота рядів автоматично */
+    height: 100vh; /* Висота всієї сторінки */
+}
+
+/* Блок 1 займає 80% ширини зліва */
+.block1 {
+    grid-column: 1; /* Блок 1 у першій колонці */
+    grid-row: 1; /* Перший рядок */
+    height: 150px; /* Висота блоку 1 */
+    background-color: rgb(252, 214, 237);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+/* Блок 2 займає 20% ширини справа */
+.block2 {
+    grid-column: 2; /* Блок 2 у другій колонці */
+    grid-row: 1 / 6; /* Тягнеться по висоті до блоку 6 */
+    background-color: rgb(255, 185, 228);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Блок 3 під блоком 1, займає 20% ширини */
+.block3 {
+    grid-column: 2; /* Блок 3 у другій колонці */
+    grid-row: 2; /* Блок 3 під блоком 1 */
+    height: auto; /* Автоматична висота */
+    background-color: rgb(255, 185, 228);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Блок 4 під блоком 1 */
+.block4 {
+    grid-column: 1; /* Блок 4 у першій колонці */
+    grid-row: 3; /* Під блоком 1 */
+    height: 150px; /* Висота блоку 4 */
+    background-color: rgb(243, 117, 195);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Блок 5 під блоком 4 */
+.block5 {
+    grid-column: 1; /* Блок 5 у першій колонці */
+    grid-row: 4; /* Під блоком 4 */
+    background-color: rgb(228, 89, 174);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+/* Блок 6 займає всю ширину сторінки */
+.block6 {
+    grid-column: 1 / 3; /* Займає обидві колонки */
+    grid-row: 5; /* Під блоками 4 і 5 */
+    height: 150px; /* Висота блоку 6 */
+    background-color: rgb(252, 214, 237);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
