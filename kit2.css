@@ -5,24 +5,24 @@ body {
 
 .wrapper {
     display: flex;
-    flex-direction: column; /* Maintain column direction */
-    height: 100vh; /* Ensure wrapper takes full height */
-    position: relative; /* Ensure children can position relative to this */
+    flex-direction: column; /* Основний напрямок розташування */
+    height: 100vh; /* Займає всю висоту вікна */
+    position: relative; 
 }
 
 .content {
-    display: flex; /* Allow the first and second sections to sit next to each other */
-    flex: 1; /* Take remaining space */
+    display: flex; /* Перший та другий блоки розташовані поряд */
+    flex: 1; /* Займають залишковий простір */
 }
 
 .first {
-    flex: 0 0 79%; /* Left section width */
+    flex: 0 0 79%; /* Ширина лівої секції */
     display: flex;
-    flex-direction: column; /* Stack blocks vertically */
+    flex-direction: column; /* Вирівнюємо блоки вертикально */
 }
 
 .top-section {
-    height: 19vh; /* Keeps the height for the top section */
+    height: 19vh; /* Фіксована висота верхньої секції */
 }
 
 .block1 {
@@ -31,8 +31,8 @@ body {
     height: 100%; 
     box-sizing: border-box; 
     display: flex; 
-    justify-content: space-between; /* Space elements */
-    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Простір між елементами */
+    align-items: center; /* Вертикальне вирівнювання по центру */
 }
 
 .block1 ol {
@@ -44,7 +44,7 @@ body {
 
 .block1 li {
     margin-right: 2%; 
-    font-size: calc(1rem + 0.3vw); 
+    font-size: calc(1rem + 0.3vw); /* Масштабування тексту */
 }
 
 .block1 img {
@@ -54,7 +54,7 @@ body {
 
 .middle-section {
     display: flex; 
-    flex: 1; /* Take remaining space */
+    flex: 1; /* Займає залишковий простір */
 }
 
 .left {
@@ -90,7 +90,7 @@ body {
 
 .block4 { 
     background-color: rgb(243, 117, 195);
-    height: 13%; /* Adjusted height for Block 4 */
+    height: 13%; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -110,13 +110,13 @@ body {
     max-width: 100%; 
     margin: 0 auto; 
     overflow: hidden; 
-    flex: 1; /* Take remaining space */
+    flex: 1;
 }
 
 .second {
-    flex: 0 0 21%; /* Right section width */
-    display: flex; /* Allow vertical stacking */
-    flex-direction: column; /* Stack blocks vertically */
+    flex: 0 0 21%; /* Ширина правої секції */
+    display: flex; /* Секції розташовуються вертикально */
+    flex-direction: column; 
 }
 
 .block2 {
@@ -131,10 +131,6 @@ body {
     justify-content: flex-start; 
     align-items: center; 
     font-size: calc(0.9rem + 0.5vw); 
-    padding: 2%; 
-    padding-left: 5%; 
-    padding-right: 5%; 
-    box-sizing: border-box; 
     margin: 0 auto; 
     overflow: hidden; 
     position: relative; 
@@ -163,10 +159,10 @@ body {
 
 .block6 {
     background-color: rgb(252, 214, 237); 
-    height: 19vh; /* Fixed height for basement */
+    height: 19vh; /* Фіксована висота нижнього блоку */
     display: flex;
-    justify-content: space-between; /* Space items */
-    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Простір між елементами */
+    align-items: center;
     font-size: calc(1.5rem + 1vw);
     padding: 2%;
     box-sizing: border-box;
@@ -175,51 +171,49 @@ body {
 .blockx {
     background-color: rgb(243, 117, 195);
     display: flex;
-    width: 25%; /* Keep width as is */
-    justify-content: center; /* Center text and image */
+    width: 25%; 
+    justify-content: center;
     align-items: center;
-    margin-left: 10%S;
-    padding: 10px; /* Decrease padding to reduce height */
-    height: auto; /* Allow height to adjust based on content */
-    margin-top: 10px; /* Spacing from the top section */
-    font-size: calc(1.5rem + 0.5vw); /* Keep font size */
+    padding: 10px; 
+    height: auto;
+    margin-top: 10px;
+    font-size: calc(1.5rem + 0.5vw);
 }
-
 
 .blocky {
     background-color: rgb(255, 185, 228);
     display: flex;
-    justify-content: center; /* Center text */
+    justify-content: center;
     align-items: center;
     width: 25%;
-    padding: 20px; /* Increased padding */
-    margin-top: 10px; /* Spacing from the bottom */
-    font-size: calc(1.5rem + 0.5vw); /* Increased font size */
-
+    padding: 20px; 
+    margin-top: 10px;
+    font-size: calc(1.5rem + 0.5vw);
 }
 
-.blockx img {
+.blockx img, .blocky img {
     max-width: 50%; 
     max-height: 50%; 
     object-fit: contain; 
-    margin-right: 2%; 
 }
 
-.blocky { 
-    background-color: rgb(243, 117, 195);
-    grid-column: 16 / 20;
-    grid-row: 41 / 44; 
-    z-index: 10; /* Ensure visibility */
-}
+/* Медіа-запити для адаптивного дизайну */
 
 @media (max-width: 768px) {
     .content {
-        flex-direction: column; /* Stack content vertically on small screens */
+        flex-direction: column; /* Вертикальне розташування контенту */
     }
     .first, .second {
-        flex: 0 0 100%; /* Make both sections full width */
+        flex: 0 0 100%; /* Обидві секції на повну ширину */
     }
-    .wrapper2 {
-        grid-template-columns: repeat(4, 1fr); /* Adjust grid layout for smaller screens */
+}
+
+@media (max-width: 480px) {
+    .blockx, .blocky {
+        font-size: calc(1rem + 0.5vw); /* Зменшуємо шрифт для менших екранів */
+    }
+
+    .block1 img, .block3 img, .block2 img {
+        max-width: 20vw; /* Зменшуємо зображення */
     }
 }
