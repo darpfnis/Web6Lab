@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6 laba</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class = "wrapper">
+        <div class = "blockx">
+            <img src = "pfp\1.png" alt="Icon">
+            LLC
+        </div>
+        <div class = "blocky">
+            Live Love Cats
+        </div>
+        <div class = "block1"> 
+            <ol>
+                <li><a href = "index.html" target=""><img src = "pfp\2.png" alt = "2 page"></a></li>
+                <li><a href = "page1.html" target=""><img src = "pfp\3.png" alt = "3 page"></a></li>
+                <li><a href = "#" target=""><img src = "pfp\4.png" alt = "4 page"></a></li>
+                <li><a href = "#" target=""><img src = "pfp\5.png" alt = "5 page"></a></li>
+            </ol> 
+        </div>
+        <div class = "block2">
+            <p>
+                Each cat has a distinct personality, with some being more social and others preferring solitude. 
+                Interestingly, cats groom themselves regularly, not just to keep clean, but also to regulate their body temperature and manage stress.
+            </p>
+                <img src = "pfp\7.png" alt = "right side cat">
+        </div>
+        <div class = "block3">
+            <p> Cats have a strong bond with their human companions, often showing affection by rubbing against them, purring, or kneading with their paws. 
+                Their mysterious and playful behavior, combined with moments of warmth and companionship makes them endlessly fascinating to cat lovers.
+            </p>
+            <img src = "pfp\6.png" alt = "left side cat">
+        </div>
+        <div class = "block4">
+            DID YOU KNOW?
+        </div>  
+        <div class="block5">
+            <div id="carousel-container">
+                <!-- Карусель буде згенерована тут -->
+            </div>
+        </div>
+</div>
+</div>
+        <div class = "block6">
+            @darpfnis
+        </div>
+   
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    const carouselContainer = document.getElementById('carousel-container');
+    
+    // Функція для завантаження даних з сервера
+      async function loadCarouselData() {
+        try {
+            const response = await fetch('get_carousel.php'); // Отримуємо дані з сервера
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+           const data = await response.json(); // Розшифровуємо JSON відповідь
+           if (data && data.items && data.items.length > 0) {
+            updateCarousel(data);
+            } else {
+            carouselContainer.innerHTML = '<p>Немає даних для каруселі</p>';
+           }
+       } catch (error) {
+             console.error('Помилка при завантаженні даних:', error);
+            carouselContainer.innerHTML = '<p>Помилка при завантаженні каруселі</p>';
+        }
+     }
+    
+    // Функція для оновлення каруселі на сторінці
+    function updateCarousel(carouselData) {
+        carouselContainer.innerHTML = '';
+        if (!carouselData || !carouselData.items || carouselData.items.length === 0) {
+            carouselContainer.innerHTML = '<p>Карусель порожня</p>';
+            return;
+        }
+       const carouselElem = document.createElement('div');
+       carouselElem.classList.add('carousel', 'slide');
+       carouselElem.setAttribute('data-bs-ride', 'carousel');
+
+        if(carouselData.crossfade){
+           carouselElem.classList.add('carousel-fade');
+        }
+       if(carouselData.dark){
+            carouselElem.classList.add('carousel-dark');
+       }
+         
+      const carouselIndicators = document.createElement('div');
+      carouselIndicators.classList.add('carousel-indicators');
+      carouselElem.appendChild(carouselIndicators);
+
+
+     const carouselInner = document.createElement('div');
+      carouselInner.classList.add('carousel-inner');
+      carouselElem.appendChild(carouselInner);
+        
+       carouselData.items.forEach((item, index) => {
+            const carouselItem = document.createElement('div');
+            carouselItem.classList.add('carousel-item');
+            if(index === 0) carouselItem.classList.add('active');
+
+             const image = document.createElement('img');
+             image.src = item.image;
+            image.classList.add('d-block', 'w-100');
+             image.alt = `Зображення ${index + 1}`;
+            carouselItem.appendChild(image);
+           
+            if (item.caption && (item.caption.title || item.caption.text)) {
+               const captionDiv = document.createElement('div');
+                captionDiv.classList.add('carousel-caption', 'd-none', 'd-md-block');
+                if (item.caption.title) {
+                    const title = document.createElement('h5');
+                    title.textContent = item.caption.title;
+                     captionDiv.appendChild(title);
+                 }
+                if (item.caption.text) {
+                   const text = document.createElement('p');
+                    text.textContent = item.caption.text;
+                    captionDiv.appendChild(text);
+               }
+               carouselItem.appendChild(captionDiv);
+            }
+            carouselInner.appendChild(carouselItem);
+            
+            const indicatorButton = document.createElement('button');
+            indicatorButton.setAttribute('type', 'button');
+            indicatorButton.setAttribute('data-bs-target', '#carousel-container .carousel');
+           indicatorButton.setAttribute('data-bs-slide-to', String(index));
+            indicatorButton.setAttribute('aria-label', `Slide ${index+1}`);
+             if(index === 0) {
+                 indicatorButton.classList.add('active');
+               indicatorButton.setAttribute('aria-current', 'true');
+            }
+           carouselIndicators.appendChild(indicatorButton);
+        });
+
+
+        const prevButton = document.createElement('button');
+       prevButton.classList.add('carousel-control-prev');
+        prevButton.setAttribute('type', 'button');
+       prevButton.setAttribute('data-bs-target', '#carousel-container .carousel');
+        prevButton.setAttribute('data-bs-slide', 'prev');
+         prevButton.innerHTML = `<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>`;
+         carouselElem.appendChild(prevButton);
+
+
+        const nextButton = document.createElement('button');
+        nextButton.classList.add('carousel-control-next');
+        nextButton.setAttribute('type', 'button');
+       nextButton.setAttribute('data-bs-target', '#carousel-container .carousel');
+        nextButton.setAttribute('data-bs-slide', 'next');
+        nextButton.innerHTML = `<span class="carousel-control-next-icon" aria-hidden="true"></span>
+         <span class="visually-hidden">Next</span>`;
+        carouselElem.appendChild(nextButton);
+
+
+         carouselContainer.appendChild(carouselElem);
+      // Ініціалізуємо карусель
+        initCarousel(carouselContainer.querySelector('.carousel'));
+     }
+
+
+    function initCarousel(carouselElem){
+        if(!carouselElem) return;
+         let currentIndex = 0;
+        const items = carouselElem.querySelectorAll('.carousel-item');
+        const indicators = carouselElem.querySelectorAll('.carousel-indicators button');
+        
+        function updateCarousel(){
+            items.forEach((item, index)=>{
+                item.classList.remove('active');
+                if(index === currentIndex){
+                   item.classList.add('active');
+                }
+            });
+            indicators.forEach((indicator, index) => {
+                indicator.classList.remove('active');
+                 indicator.removeAttribute('aria-current');
+                if (index === currentIndex) {
+                    indicator.classList.add('active');
+                   indicator.setAttribute('aria-current', 'true');
+               }
+          });
+     }
+        carouselElem.addEventListener('click', event => {
+            if (event.target.closest('.carousel-control-prev')) {
+               currentIndex = (currentIndex - 1 + items.length) % items.length;
+                 updateCarousel();
+           } else if (event.target.closest('.carousel-control-next')) {
+              currentIndex = (currentIndex + 1) % items.length;
+                 updateCarousel();
+            } else if(event.target.closest('.carousel-indicators button')){
+                const index = parseInt(event.target.getAttribute('data-bs-slide-to'));
+               if (!isNaN(index)) {
+                   currentIndex = index;
+                    updateCarousel();
+                }
+           }
+     });
+    }
+
+     loadCarouselData(); // Завантажуємо карусель при завантаженні сторінки
+
+     // Оновлення каруселі кожні 5 секунд
+     setInterval(loadCarouselData, 5000);
+});
+</script>
+</html>

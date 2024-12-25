@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6 laba</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class = "wrapper">
+        <div class = "blockx">
+            <img src = "pfp\1.png" alt="Icon">
+            LLC
+        </div>
+        <div class = "blocky">
+            Live Love Cats
+        </div>
+        <div class = "block1"> 
+            <ol>
+                <li><a href = "index.html" target=""><img src = "pfp\2.png" alt = "2 page"></a></li>
+                <li><a href = "page2.html" target=""><img src = "pfp\2.png" alt = "2 page"></a></li>
+                <li><a href = "#" target=""><img src = "pfp\4.png" alt = "4 page"></a></li>
+                <li><a href = "#" target=""><img src = "pfp\5.png" alt = "5 page"></a></li>
+            </ol> 
+        </div>
+        <div class = "block2">
+            <p>
+                Each cat has a distinct personality, with some being more social and others preferring solitude. 
+                Interestingly, cats groom themselves regularly, not just to keep clean, but also to regulate their body temperature and manage stress.
+            </p>
+                <img src = "pfp\7.png" alt = "right side cat">
+        </div>
+        <div class = "block3">
+            <p> Cats have a strong bond with their human companions, often showing affection by rubbing against them, purring, or kneading with their paws. 
+                Their mysterious and playful behavior, combined with moments of warmth and companionship makes them endlessly fascinating to cat lovers.
+            </p>
+            <img src = "pfp\6.png" alt = "left side cat">
+        </div>
+        <div class = "block4">
+            DID YOU KNOW?
+        </div>  
+        <!-- page1.html (блок 5) -->
+        <div class="block5">
+            <h2>Створення каруселі</h2>
+            <form id="carousel-form">
+                <div id="carousel-items">
+                    <!-- Динамічні поля будуть додаватися тут -->
+                </div>
+                <div id = "settings">
+                     <label for="crossfade">Crossfade:</label>
+                     <input type="checkbox" id="crossfade" name="crossfade">
+        
+                     <label for="dark">Dark variant:</label>
+                     <input type="checkbox" id="dark" name="dark">
+                </div>
+                <button type="button" id="add-item">Додати елемент</button>
+                <button type="submit">Зберегти карусель</button>
+            </form>
+            <div id="carousel-preview">
+                 <!-- Карусель для перегляду буде тут -->
+             </div>
+        </div>
+</div>
+        <div class = "block6">
+            @darpfnis
+        </div>
+   
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const carouselForm = document.getElementById('carousel-form');
+        const carouselItems = document.getElementById('carousel-items');
+        const addItemButton = document.getElementById('add-item');
+        const carouselPreview = document.getElementById('carousel-preview');
+        const crossfadeCheckbox = document.getElementById('crossfade');
+        const darkVariantCheckbox = document.getElementById('dark');
+        let itemCount = 0;
+
+          function createCarouselItemField(itemIndex) {
+            const container = document.createElement('div');
+            container.classList.add('carousel-item-container');
+            
+            const label = document.createElement('label');
+            label.textContent = `Елемент ${itemIndex + 1}:`;
+            container.appendChild(label);
+
+            const imageInput = document.createElement('input');
+            imageInput.setAttribute('type', 'text');
+            imageInput.setAttribute('placeholder', 'Посилання на зображення');
+            imageInput.setAttribute('name', `item_image_${itemIndex}`);
+             container.appendChild(imageInput);
+
+            const captionTitleInput = document.createElement('input');
+            captionTitleInput.setAttribute('type', 'text');
+            captionTitleInput.setAttribute('placeholder', 'Заголовок підпису');
+            captionTitleInput.setAttribute('name', `item_caption_title_${itemIndex}`);
+             container.appendChild(captionTitleInput);
+        
+            const captionTextarea = document.createElement('textarea');
+            captionTextarea.setAttribute('placeholder', 'Текст підпису');
+            captionTextarea.setAttribute('name', `item_caption_text_${itemIndex}`);
+            container.appendChild(captionTextarea);
+            
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Видалити';
+            removeButton.type = 'button';
+            removeButton.onclick = () => container.remove();
+            container.appendChild(removeButton);
+
+            carouselItems.appendChild(container);
+        }
+
+           // Додаємо перше поле при завантаженні сторінки
+           createCarouselItemField(itemCount);
+           itemCount++;
+
+          addItemButton.addEventListener('click', () => {
+             createCarouselItemField(itemCount);
+            itemCount++;
+        });
+    
+         carouselForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(carouselForm);
+            const carouselData = {
+                items: [],
+                crossfade: crossfadeCheckbox.checked,
+                dark: darkVariantCheckbox.checked
+             };
+
+            for (let i = 0; i < itemCount; i++) {
+                const image = formData.get(`item_image_${i}`);
+                const captionTitle = formData.get(`item_caption_title_${i}`);
+                const captionText = formData.get(`item_caption_text_${i}`);
+
+                if(image && captionTitle && captionText){
+                    carouselData.items.push({
+                    image: image,
+                    caption: { title: captionTitle, text: captionText },
+                });
+               }
+           }
+            console.log(carouselData);
+        
+        try {
+            const response = await fetch('save_carousel.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carouselData)
+            });
+            if (response.ok) {
+                alert('Карусель збережено!');
+                updateCarouselPreview(carouselData);
+            } else {
+                alert('Помилка при збереженні каруселі.');
+            }
+        } catch (error) {
+            console.error('Помилка відправки:', error);
+            }
+        });
+
+        function updateCarouselPreview(carouselData) {
+             carouselPreview.innerHTML = '';
+
+            if (!carouselData || !carouselData.items || carouselData.items.length === 0) {
+                carouselPreview.innerHTML = '<p>Карусель порожня</p>';
+                return;
+            }
+
+            const carouselElem = document.createElement('div');
+            carouselElem.classList.add('carousel', 'slide');
+            carouselElem.setAttribute('data-bs-ride', 'carousel');
+             if(carouselData.crossfade){
+                 carouselElem.classList.add('carousel-fade');
+             }
+             if(carouselData.dark){
+                carouselElem.classList.add('carousel-dark');
+             }
+
+
+           const carouselIndicators = document.createElement('div');
+           carouselIndicators.classList.add('carousel-indicators');
+           carouselElem.appendChild(carouselIndicators);
+
+
+            const carouselInner = document.createElement('div');
+            carouselInner.classList.add('carousel-inner');
+             carouselElem.appendChild(carouselInner);
+
+          carouselData.items.forEach((item, index) => {
+                const carouselItem = document.createElement('div');
+                carouselItem.classList.add('carousel-item');
+                if(index === 0) carouselItem.classList.add('active');
+            
+                const image = document.createElement('img');
+                image.src = item.image;
+                image.classList.add('d-block', 'w-100');
+                image.alt = `Зображення ${index + 1}`;
+                carouselItem.appendChild(image);
+
+            if (item.caption && (item.caption.title || item.caption.text)) {
+                const captionDiv = document.createElement('div');
+                captionDiv.classList.add('carousel-caption', 'd-none', 'd-md-block');
+
+                if(item.caption.title){
+                    const title = document.createElement('h5');
+                    title.textContent = item.caption.title;
+                   captionDiv.appendChild(title);
+                 }
+
+                 if(item.caption.text){
+                     const text = document.createElement('p');
+                     text.textContent = item.caption.text;
+                    captionDiv.appendChild(text);
+                 }
+                carouselItem.appendChild(captionDiv);
+            }
+                carouselInner.appendChild(carouselItem);
+
+           const indicatorButton = document.createElement('button');
+           indicatorButton.setAttribute('type', 'button');
+           indicatorButton.setAttribute('data-bs-target', '#carousel-preview .carousel');
+           indicatorButton.setAttribute('data-bs-slide-to', String(index));
+           indicatorButton.setAttribute('aria-label', `Slide ${index+1}`);
+           if(index === 0) {
+                indicatorButton.classList.add('active');
+                indicatorButton.setAttribute('aria-current', 'true');
+            }
+             carouselIndicators.appendChild(indicatorButton);
+          });
+
+          const prevButton = document.createElement('button');
+           prevButton.classList.add('carousel-control-prev');
+           prevButton.setAttribute('type', 'button');
+           prevButton.setAttribute('data-bs-target', '#carousel-preview .carousel');
+           prevButton.setAttribute('data-bs-slide', 'prev');
+            prevButton.innerHTML = `<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+             <span class="visually-hidden">Previous</span>`;
+            carouselElem.appendChild(prevButton);
+
+           const nextButton = document.createElement('button');
+            nextButton.classList.add('carousel-control-next');
+            nextButton.setAttribute('type', 'button');
+            nextButton.setAttribute('data-bs-target', '#carousel-preview .carousel');
+            nextButton.setAttribute('data-bs-slide', 'next');
+           nextButton.innerHTML = `<span class="carousel-control-next-icon" aria-hidden="true"></span>
+           <span class="visually-hidden">Next</span>`;
+          carouselElem.appendChild(nextButton);
+
+
+         carouselPreview.appendChild(carouselElem);
+        // Ініціалізуємо карусель
+          initCarousel(carouselPreview.querySelector('.carousel'));
+       }
+    function initCarousel(carouselElem){
+            if(!carouselElem) return;
+            let currentIndex = 0;
+        
+           const items = carouselElem.querySelectorAll('.carousel-item');
+           const indicators = carouselElem.querySelectorAll('.carousel-indicators button');
+
+           function updateCarousel(){
+            items.forEach((item, index)=>{
+                item.classList.remove('active');
+               if(index === currentIndex){
+                 item.classList.add('active');
+               }
+             });
+            indicators.forEach((indicator, index) => {
+                indicator.classList.remove('active');
+               indicator.removeAttribute('aria-current');
+                if (index === currentIndex) {
+                   indicator.classList.add('active');
+                   indicator.setAttribute('aria-current', 'true');
+               }
+            });
+         }
+
+          carouselElem.addEventListener('click', event => {
+                if (event.target.closest('.carousel-control-prev')) {
+                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                   updateCarousel();
+                } else if (event.target.closest('.carousel-control-next')) {
+                    currentIndex = (currentIndex + 1) % items.length;
+                     updateCarousel();
+               } else if(event.target.closest('.carousel-indicators button')){
+                 const index = parseInt(event.target.getAttribute('data-bs-slide-to'));
+                if (!isNaN(index)) {
+                  currentIndex = index;
+                  updateCarousel();
+                }
+             }
+
+         });
+        }
+
+    });
+</script>
+</html>
